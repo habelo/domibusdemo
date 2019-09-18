@@ -1,3 +1,3 @@
 Demo project for the communication between a Domibus server and a SpringBootApplication.
 
-Soap, As4
+Soap, As4, eDelivery

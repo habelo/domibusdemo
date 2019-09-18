@@ -1,27 +1,73 @@
 package com.tdialog.domibusdemo;
 
+import javafx.util.Pair;
+import org.springframework.boot.SpringApplication;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 public class Message {
 
-    private final String text;
-    private final String sender;
-    private final String reciever;
+    private UUID id;
+    private LocalDateTime dateTime;
+    private String from;
+    private Pair<String, String> service;
+    private String action;
+    private String conversationId;
 
-
-    public Message(String text, String sender, String reciever) {
-        this.text = text;
-        this.sender = sender;
-        this.reciever = reciever;
+    public Message() {
+        //sdk rekommenderar values:
+        service = new Pair<>("se-digg-procid", "urn:riv:messaging-process");
+        action = "urn:riv:infrastructure:messaging:MessageWithAttachments:1:Message";
     }
 
-    public String getText() {
-        return text;
+    public UUID getId() {
+        return id;
     }
 
-    public String getSender() {
-        return sender;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public String getReciever() {
-        return reciever;
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime() {
+        dateTime = LocalDateTime.now(Clock.systemUTC());
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    //fixme skall vara url'n som meddelandet skickades ifrån
+    public void setFrom(String from) {
+        this.from = SpringApplication.BANNER_LOCATION_PROPERTY;
+    }
+
+    public Pair<String, String> getService() {
+        return service;
+    }
+
+    public void setService(Pair<String, String> service) {
+        this.service = service;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 }
