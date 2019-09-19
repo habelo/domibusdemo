@@ -34,11 +34,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link From }
+     * Create an instance of {@link AgreementRef }
      * 
      */
-    public From createFrom() {
-        return new From();
+    public AgreementRef createAgreementRef() {
+        return new AgreementRef();
+    }
+
+    /**
+     * Create an instance of {@link UserMessage }
+     * 
+     */
+    public UserMessage createUserMessage() {
+        return new UserMessage();
+    }
+
+    /**
+     * Create an instance of {@link Property }
+     * 
+     */
+    public Property createProperty() {
+        return new Property();
+    }
+
+    /**
+     * Create an instance of {@link MessageInfo }
+     * 
+     */
+    public MessageInfo createMessageInfo() {
+        return new MessageInfo();
     }
 
     /**
@@ -50,6 +74,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Service }
+     * 
+     */
+    public Service createService() {
+        return new Service();
+    }
+
+    /**
+     * Create an instance of {@link PartInfo }
+     * 
+     */
+    public PartInfo createPartInfo() {
+        return new PartInfo();
+    }
+
+    /**
+     * Create an instance of {@link From }
+     * 
+     */
+    public From createFrom() {
+        return new From();
+    }
+
+    /**
      * Create an instance of {@link MessageProperties }
      * 
      */
@@ -58,11 +106,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Property }
+     * Create an instance of {@link PartyInfo }
      * 
      */
-    public Property createProperty() {
-        return new Property();
+    public PartyInfo createPartyInfo() {
+        return new PartyInfo();
+    }
+
+    /**
+     * Create an instance of {@link CollaborationInfo }
+     * 
+     */
+    public CollaborationInfo createCollaborationInfo() {
+        return new CollaborationInfo();
+    }
+
+    /**
+     * Create an instance of {@link PayloadInfo }
+     * 
+     */
+    public PayloadInfo createPayloadInfo() {
+        return new PayloadInfo();
+    }
+
+    /**
+     * Create an instance of {@link PartyId }
+     * 
+     */
+    public PartyId createPartyId() {
+        return new PartyId();
     }
 
     /**
@@ -79,78 +151,6 @@ public class ObjectFactory {
      */
     public PartProperties createPartProperties() {
         return new PartProperties();
-    }
-
-    /**
-     * Create an instance of {@link Service }
-     * 
-     */
-    public Service createService() {
-        return new Service();
-    }
-
-    /**
-     * Create an instance of {@link MessageInfo }
-     * 
-     */
-    public MessageInfo createMessageInfo() {
-        return new MessageInfo();
-    }
-
-    /**
-     * Create an instance of {@link CollaborationInfo }
-     * 
-     */
-    public CollaborationInfo createCollaborationInfo() {
-        return new CollaborationInfo();
-    }
-
-    /**
-     * Create an instance of {@link PartyInfo }
-     * 
-     */
-    public PartyInfo createPartyInfo() {
-        return new PartyInfo();
-    }
-
-    /**
-     * Create an instance of {@link PartyId }
-     * 
-     */
-    public PartyId createPartyId() {
-        return new PartyId();
-    }
-
-    /**
-     * Create an instance of {@link PartInfo }
-     * 
-     */
-    public PartInfo createPartInfo() {
-        return new PartInfo();
-    }
-
-    /**
-     * Create an instance of {@link AgreementRef }
-     * 
-     */
-    public AgreementRef createAgreementRef() {
-        return new AgreementRef();
-    }
-
-    /**
-     * Create an instance of {@link PayloadInfo }
-     * 
-     */
-    public PayloadInfo createPayloadInfo() {
-        return new PayloadInfo();
-    }
-
-    /**
-     * Create an instance of {@link UserMessage }
-     * 
-     */
-    public UserMessage createUserMessage() {
-        return new UserMessage();
     }
 
     /**

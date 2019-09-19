@@ -4,6 +4,7 @@ import backend.ecodex.org._1_1.SubmitRequest;
 import backend.ecodex.org._1_1.SubmitResponse;
 import com.tdialog.domibusdemo.impl.Connector;
 import eu.domibus.messaging.MessageConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -14,6 +15,9 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 public class MessageEndpoint {
 
     private final WebServiceTemplate webServiceTemplate;
+
+    @Autowired
+    Client client;
 
     private final String test = MessageConstants.DOMAIN;
     //namespace for the wsdl
@@ -30,9 +34,10 @@ public class MessageEndpoint {
     @PayloadRoot(namespace = NAMESPACE, localPart = "submitRequest")
     @ResponsePayload
     public SubmitResponse getMessage(@RequestPayload SubmitRequest request){
-        System.out.println(request.getBodyload().getPayloadId());
-        Client client = new Client(webServiceTemplate);
-        client.pingDomibus();
+
+        System.out.println("Request payload: "+ request.getPayload());
+//        Client client = new Client(webServiceTemplate);
+//        client.pingDomibus();
         return new SubmitResponse();
     }
 

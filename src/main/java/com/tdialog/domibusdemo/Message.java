@@ -1,11 +1,14 @@
 package com.tdialog.domibusdemo;
 
 import javafx.util.Pair;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
+import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 
 public class Message {
 
@@ -15,6 +18,8 @@ public class Message {
     private Pair<String, String> service;
     private String action;
     private String conversationId;
+    private String text;
+    private String title;
 
     public Message() {
         //sdk rekommenderar values:
@@ -70,4 +75,21 @@ public class Message {
     public void setConversationId(String conversationId) {
         this.conversationId = conversationId;
     }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 }

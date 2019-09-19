@@ -13,8 +13,8 @@ public class ClientConfig {
         Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
         jaxb2Marshaller
 //                .setContextPath("org.w3._2005._05.xmlmime");
-//                .setContextPath("org.w3._2005._05.xmlmime:org.w3._2003._05.soap_envelope:org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704:backend.ecodex.org._1_1");
-                .setContextPath("backend.ecodex.org._1_1");
+                .setContextPath("org.w3._2005._05.xmlmime:org.w3._2003._05.soap_envelope:org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704:backend.ecodex.org._1_1");
+//                .setContextPath("backend.ecodex.org._1_1");
 
         return jaxb2Marshaller;
     }
