@@ -39,11 +39,59 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RetrieveMessageResponse }
+     * Create an instance of {@link RetrieveMessageRequest }
      * 
      */
-    public RetrieveMessageResponse createRetrieveMessageResponse() {
-        return new RetrieveMessageResponse();
+    public RetrieveMessageRequest createRetrieveMessageRequest() {
+        return new RetrieveMessageRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListPendingMessagesResponse }
+     * 
+     */
+    public ListPendingMessagesResponse createListPendingMessagesResponse() {
+        return new ListPendingMessagesResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetErrorsRequest }
+     * 
+     */
+    public GetErrorsRequest createGetErrorsRequest() {
+        return new GetErrorsRequest();
+    }
+
+    /**
+     * Create an instance of {@link SubmitResponse }
+     * 
+     */
+    public SubmitResponse createSubmitResponse() {
+        return new SubmitResponse();
+    }
+
+    /**
+     * Create an instance of {@link LargePayloadType }
+     * 
+     */
+    public LargePayloadType createLargePayloadType() {
+        return new LargePayloadType();
+    }
+
+    /**
+     * Create an instance of {@link PayloadURLType }
+     * 
+     */
+    public PayloadURLType createPayloadURLType() {
+        return new PayloadURLType();
+    }
+
+    /**
+     * Create an instance of {@link GetStatusRequest }
+     * 
+     */
+    public GetStatusRequest createGetStatusRequest() {
+        return new GetStatusRequest();
     }
 
     /**
@@ -71,67 +119,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PayloadURLType }
+     * Create an instance of {@link MessageErrorsRequest }
      * 
      */
-    public PayloadURLType createPayloadURLType() {
-        return new PayloadURLType();
-    }
-
-    /**
-     * Create an instance of {@link SubmitResponse }
-     * 
-     */
-    public SubmitResponse createSubmitResponse() {
-        return new SubmitResponse();
-    }
-
-    /**
-     * Create an instance of {@link ErrorResultImpl }
-     * 
-     */
-    public ErrorResultImpl createErrorResultImpl() {
-        return new ErrorResultImpl();
-    }
-
-    /**
-     * Create an instance of {@link ListPendingMessagesResponse }
-     * 
-     */
-    public ListPendingMessagesResponse createListPendingMessagesResponse() {
-        return new ListPendingMessagesResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetErrorsRequest }
-     * 
-     */
-    public GetErrorsRequest createGetErrorsRequest() {
-        return new GetErrorsRequest();
-    }
-
-    /**
-     * Create an instance of {@link GetStatusRequest }
-     * 
-     */
-    public GetStatusRequest createGetStatusRequest() {
-        return new GetStatusRequest();
-    }
-
-    /**
-     * Create an instance of {@link StatusRequest }
-     * 
-     */
-    public StatusRequest createStatusRequest() {
-        return new StatusRequest();
-    }
-
-    /**
-     * Create an instance of {@link PayloadType }
-     * 
-     */
-    public PayloadType createPayloadType() {
-        return new PayloadType();
+    public MessageErrorsRequest createMessageErrorsRequest() {
+        return new MessageErrorsRequest();
     }
 
     /**
@@ -143,27 +135,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RetrieveMessageRequest }
+     * Create an instance of {@link RetrieveMessageResponse }
      * 
      */
-    public RetrieveMessageRequest createRetrieveMessageRequest() {
-        return new RetrieveMessageRequest();
+    public RetrieveMessageResponse createRetrieveMessageResponse() {
+        return new RetrieveMessageResponse();
     }
 
     /**
-     * Create an instance of {@link LargePayloadType }
+     * Create an instance of {@link ErrorResultImpl }
      * 
      */
-    public LargePayloadType createLargePayloadType() {
-        return new LargePayloadType();
+    public ErrorResultImpl createErrorResultImpl() {
+        return new ErrorResultImpl();
     }
 
     /**
-     * Create an instance of {@link MessageErrorsRequest }
+     * Create an instance of {@link PayloadType }
      * 
      */
-    public MessageErrorsRequest createMessageErrorsRequest() {
-        return new MessageErrorsRequest();
+    public PayloadType createPayloadType() {
+        return new PayloadType();
+    }
+
+    /**
+     * Create an instance of {@link StatusRequest }
+     * 
+     */
+    public StatusRequest createStatusRequest() {
+        return new StatusRequest();
     }
 
     /**

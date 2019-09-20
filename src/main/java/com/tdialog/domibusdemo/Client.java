@@ -5,7 +5,6 @@ import backend.ecodex.org._1_1.ObjectFactory;
 import backend.ecodex.org._1_1.SubmitRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
@@ -33,20 +32,26 @@ public class Client {
 
     private String fromValue;
     private String toValue;
+    private String address;
 
     private final WebServiceTemplate template;
 
     @Autowired
-    public Client(@Value("${server.skl-sdk.to}") String toValue,@Value("${server.skl-sdk.from}") String fromValue, WebServiceTemplate template) {
+    public Client(@Value("${server.skl-sdk.to}") String toValue,
+                  @Value("${server.skl-sdk.from}") String fromValue,
+                  @Value("${server.skl-sdk.organisationsid}") String address,
+                  WebServiceTemplate template) {
         this.toValue = toValue;
         this.fromValue = fromValue;
         this.template = template;
+        this.address = address;
     }
 
     @PostConstruct
     public void init() {
         System.out.println("CONFIGS:================== toValue" + toValue + "================== ");
         System.out.println("CONFIGS:================== fromValue" + fromValue + "================== ");
+        DataHandler.setDataContentHandlerFactory(new DomibusDataHandlerContentFactory());
     }
 
     public List<String> pingDomibus() {
@@ -72,7 +77,8 @@ public class Client {
         //DataHandler testHandler = new DataHandler(localMessage, "mimetyp?");
         String testString = new String("Test test");
 
-        DataHandler.setDataContentHandlerFactory(new DomibusDataHandlerContentFactory());
+        //todo går inte köra två gånger
+//        DataHandler.setDataContentHandlerFactory(new DomibusDataHandlerContentFactory());
         //DataHandler testHandler = (new DomibusDataHandlerContentFactory()).createDataContentHandler("text/xml");
         DataHandler testHandler = new DataHandler(testString, "text/xml");
         System.out.println("Testhandler congentttype"+ testHandler.getContentType());
@@ -97,7 +103,7 @@ public class Client {
 
 
         //todo doWithMessage
-        template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue));
+        template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
 
         System.out.println("Sent");
 
@@ -153,21 +159,28 @@ public class Client {
         private static final String TO_ROLE_VALUE = "http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/responder";
 
         private static final String SERVICETYPE = "tc1";
+//        private static final String SERVICETYPE = "se-digg-procid";
         private static final String SERVICEVALUE = "bdx:noprocess";
+//        private static final String SERVICEVALUE = "urn:riv:messaging-process";
         private static final String ACTIONVALUE = "TC1Leg1";
+//        private static final String ACTIONVALUE = "urn:riv:infrastructure:messaging:MessageWithAttachments:1:Message";
 
         private static final String ORIGINALSENDER = "urn:oasis:names:tc:ebcore:partyid-type:unregistered:C1";
         private static final String FINALRECIPIENT = "urn:oasis:names:tc:ebcore:partyid-type:unregistered:C4";
+        private static final String SCHEMALOCATION = "https://org-host.se/schemas/core_components/infrastructure_messaging_MessageWithAttachments_1.0.xsd";
+        private static final String SCHEMAVERSION = "1.0";
 
         private final String toValue;
         private final String fromValue;
+        private final String address;
 
 
-        public CustomWebServiceMessageCallback(String toValue, String fromValue)
+        public CustomWebServiceMessageCallback(String toValue, String fromValue, String address)
         {
             System.out.println("Set toValue to: "+toValue);
             this.toValue = toValue;
             this.fromValue = fromValue;
+            this.address = address;
         }
 
         public void doWithMessage(WebServiceMessage message) {
@@ -194,6 +207,8 @@ public class Client {
                 SOAPElement timestampElement = messageInfoElement.addChildElement("Timestamp", "ns");
                 timestampElement.setValue(String.valueOf(LocalDateTime.now(Clock.systemUTC())));
                 SOAPElement messageIdElement = messageInfoElement.addChildElement("MessageId", "ns");
+                //inte för "submitrequest"
+//                messageIdElement.setValue(UUID.randomUUID().toString());
 
 
                 //if not work: kolla metodanropens kronologi
@@ -220,18 +235,25 @@ public class Client {
                 SOAPElement action = collaborationInfo.addChildElement("Action", "ns");
                 action.setValue(ACTIONVALUE);
                 SOAPElement conversationId = collaborationInfo.addChildElement("ConversationId", "ns");
+                //TODO ÄNDRA när det är konversation
+                conversationId.setValue("TDIALOG-");
 
                 SOAPElement messageProperties = userMessageElement.addChildElement("MessageProperties", "ns");
                 SOAPElement mProperty0 = messageProperties.addChildElement("Property", "ns");
                 mProperty0.setAttribute("name", "originalSender");
-                mProperty0.setValue(ORIGINALSENDER);
+//                mProperty0.setValue(ORIGINALSENDER);
+                mProperty0.setValue(fromValue);
                 SOAPElement mProperty1 = messageProperties.addChildElement("Property", "ns");
                 mProperty1.setAttribute("name", "finalRecipient");
-                mProperty1.setValue(FINALRECIPIENT);
+//                mProperty1.setValue(FINALRECIPIENT);
+                mProperty1.setValue(toValue);
 
                 SOAPElement payloadInfo = userMessageElement.addChildElement("PayloadInfo", "ns");
                 SOAPElement partInfo = payloadInfo.addChildElement("PartInfo", "ns");
                 partInfo.setAttribute("href", "cid:message");
+//                SOAPElement schema = partInfo.addChildElement("Schema", "ns");
+//                schema.setAttribute("location", SCHEMALOCATION);
+//                schema.setAttribute("version", SCHEMAVERSION);
                 SOAPElement partProperties = partInfo.addChildElement("PartProperties", "ns");
                 SOAPElement pProperty0 = partProperties.addChildElement("Property", "ns");
                 pProperty0.setAttribute("name", "MimeType");

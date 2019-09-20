@@ -37,7 +37,7 @@ public class MessageEndpoint {
 
         System.out.println("Request payload: "+ request.getPayload());
 //        Client client = new Client(webServiceTemplate);
-//        client.pingDomibus();
+        client.pingDomibus();
         return new SubmitResponse();
     }
 
