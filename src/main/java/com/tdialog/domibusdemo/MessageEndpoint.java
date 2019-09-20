@@ -1,7 +1,6 @@
 package com.tdialog.domibusdemo;
 
-import backend.ecodex.org._1_1.SubmitRequest;
-import backend.ecodex.org._1_1.SubmitResponse;
+import backend.ecodex.org._1_1.*;
 import com.tdialog.domibusdemo.impl.Connector;
 import eu.domibus.messaging.MessageConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+
+import javax.xml.bind.JAXBElement;
 
 @Endpoint
 public class MessageEndpoint {
@@ -33,12 +34,27 @@ public class MessageEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE, localPart = "submitRequest")
     @ResponsePayload
-    public SubmitResponse getMessage(@RequestPayload SubmitRequest request){
-
+    public SubmitResponse submitMessage(@RequestPayload SubmitRequest request){
         System.out.println("Request payload: "+ request.getPayload());
 //        Client client = new Client(webServiceTemplate);
-        client.pingDomibus();
-        return new SubmitResponse();
+//        client.submitMessage();
+        return client.submitMessage();
+//        return new SubmitResponse();
     }
 
+    //just to show how you have several endpoints
+    @PayloadRoot(namespace = NAMESPACE, localPart = "listPendingMessagesRequest")
+    @ResponsePayload
+    public ListPendingMessagesResponse listPendingMessages(@RequestPayload JAXBElement<Object> request){
+//    public ListPendingMessagesResponse listPendingMessages(@RequestPayload Object request){
+        System.out.println("PendingMessageRequest: "+ request);
+        return client.listPendingMessages(request);
+    }
+
+    @PayloadRoot(namespace = NAMESPACE, localPart = "retrieveMessageRequest")
+    @ResponsePayload
+    public RetrieveMessageResponse retrieveMessage(@RequestPayload RetrieveMessageRequest request){
+        System.out.println("RetrievingMessage: "+ request);
+        return client.retrieveMessage(request);
+    }
 }

@@ -1,8 +1,6 @@
 package com.tdialog.domibusdemo;
 
-import backend.ecodex.org._1_1.LargePayloadType;
-import backend.ecodex.org._1_1.ObjectFactory;
-import backend.ecodex.org._1_1.SubmitRequest;
+import backend.ecodex.org._1_1.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,7 +8,6 @@ import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
-import org.w3._2003._05.soap_envelope.Envelope;
 
 import javax.activation.*;
 import javax.annotation.PostConstruct;
@@ -21,20 +18,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.*;
 
 @Component
 public class Client {
-
-//    @Autowired
-//    private Environment environment;
-
 
     private String fromValue;
     private String toValue;
     private String address;
 
     private final WebServiceTemplate template;
+    private final ObjectFactory factory = new ObjectFactory();
+
 
     @Autowired
     public Client(@Value("${server.skl-sdk.to}") String toValue,
@@ -49,66 +43,46 @@ public class Client {
 
     @PostConstruct
     public void init() {
-        System.out.println("CONFIGS:================== toValue" + toValue + "================== ");
-        System.out.println("CONFIGS:================== fromValue" + fromValue + "================== ");
+        System.out.println("CONFIGS:================== toValue:   " + toValue + "================== ");
+        System.out.println("CONFIGS:================== fromValue: " + fromValue + "================== ");
         DataHandler.setDataContentHandlerFactory(new DomibusDataHandlerContentFactory());
     }
 
-    public List<String> pingDomibus() {
+    public SubmitResponse submitMessage() {
 
-        SOAPMessage message;
-        ObjectFactory factory = new ObjectFactory();
-        org.w3._2003._05.soap_envelope.ObjectFactory factory1 = new org.w3._2003._05.soap_envelope.ObjectFactory();
-        //envelope har ingen @xmlroot men SubmitRequest har de
-        Envelope envelope = factory1.createEnvelope();
+//        ObjectFactory factory = new ObjectFactory();
         SubmitRequest request = factory.createSubmitRequest();
-        //todo gör contenttype attribute
 
-//        envelope.setBody(request);
-
-//        request.setBodyload(new LargePayloadType());
-//        request.getBodyload().setPayloadId(UUID.randomUUID().toString());
-
-        //datahandler verkar vara det som hanterar själva Objektet
         Message localMessage = new Message();
         localMessage.setTitle("Hej");
         localMessage.setText("hejsan alla galna glada");
-
-        //DataHandler testHandler = new DataHandler(localMessage, "mimetyp?");
         String testString = new String("Test test");
 
-        //todo går inte köra två gånger
-//        DataHandler.setDataContentHandlerFactory(new DomibusDataHandlerContentFactory());
-        //DataHandler testHandler = (new DomibusDataHandlerContentFactory()).createDataContentHandler("text/xml");
         DataHandler testHandler = new DataHandler(testString, "text/xml");
-        System.out.println("Testhandler congentttype"+ testHandler.getContentType());
+        System.out.println("Testhandler contentType: "+ testHandler.getContentType());
         LargePayloadType testPayload = factory.createLargePayloadType();
         testPayload.setValue(testHandler);
-
         System.out.println("Commandmap is: "+CommandMap.getDefaultCommandMap().getClass().getName());
-
         testPayload.setPayloadId("cid:message");
 
         request.getPayload().add(testPayload);
 
-//            message = createSoap();
-
-        //todo make response work
         System.out.println("Default urI: " + template.getDefaultUri());
-//        System.out.println("Request: " + request.getBodyload().getPayloadId());
-//        System.out.println("template " + template);
-//        System.out.println("destination " + template.getDestinationProvider().getDestination());
-//        System.out.println("marshaller " + template.getMarshaller());
-//        SubmitResponse response = (SubmitResponse) template.marshalSendAndReceive(request);
-
-
-        //todo doWithMessage
         template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
+//        template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
 
-        System.out.println("Sent");
+        return (SubmitResponse)template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
 
-        return new ArrayList<>();
+    }
 
+    public ListPendingMessagesResponse listPendingMessages(Object request) {
+
+//        factory.createListPendingMessagesRequest(request);
+        return (ListPendingMessagesResponse)template.marshalSendAndReceive(request);
+    }
+
+    public RetrieveMessageResponse retrieveMessage(RetrieveMessageRequest request) {
+        return (RetrieveMessageResponse)template.marshalSendAndReceive(request);
     }
 
     private class DomibusDataHandlerContentFactory implements DataContentHandlerFactory {
@@ -152,16 +126,16 @@ public class Client {
 
 
         private static final String FROMTYPE = "urn:oasis:names:tc:ebcore:partyid-type:unregistered";
-//        private static final String FROMVALUE = "domibus-blue";
+        //        private static final String FROMVALUE = "domibus-blue";
         private static final String FROM_ROLE_VALUE = "http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/initiator";
         private static final String TOTYPE = "urn:oasis:names:tc:ebcore:partyid-type:unregistered";
         //private static final String TOVALUE = "domibus-red";
         private static final String TO_ROLE_VALUE = "http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/responder";
 
         private static final String SERVICETYPE = "tc1";
-//        private static final String SERVICETYPE = "se-digg-procid";
+        //        private static final String SERVICETYPE = "se-digg-procid";
         private static final String SERVICEVALUE = "bdx:noprocess";
-//        private static final String SERVICEVALUE = "urn:riv:messaging-process";
+        //        private static final String SERVICEVALUE = "urn:riv:messaging-process";
         private static final String ACTIONVALUE = "TC1Leg1";
 //        private static final String ACTIONVALUE = "urn:riv:infrastructure:messaging:MessageWithAttachments:1:Message";
 
@@ -175,9 +149,8 @@ public class Client {
         private final String address;
 
 
-        public CustomWebServiceMessageCallback(String toValue, String fromValue, String address)
-        {
-            System.out.println("Set toValue to: "+toValue);
+        public CustomWebServiceMessageCallback(String toValue, String fromValue, String address) {
+            System.out.println("Set toValue to: " + toValue);
             this.toValue = toValue;
             this.fromValue = fromValue;
             this.address = address;
@@ -185,12 +158,8 @@ public class Client {
 
         public void doWithMessage(WebServiceMessage message) {
             try {
-                //Properties holder = new Properties();
-                //String TOVALUE = holder.getUrl();
-                System.out.println("FROM CONFIG URL: "+toValue);
-//                SOAPMessage soapMessage = ((SaajSoapMessage) message).getSaajMessage();
-//                SOAPHeader header = soapMessage.getSOAPHeader();
-                SaajSoapMessage saajSoapMessage = (SaajSoapMessage)message;
+                System.out.println("FROM CONFIG URL: " + toValue);
+                SaajSoapMessage saajSoapMessage = (SaajSoapMessage) message;
                 SOAPMessage soapMessage = saajSoapMessage.getSaajMessage();
                 SOAPPart soapPart = soapMessage.getSOAPPart();
                 SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
@@ -260,93 +229,12 @@ public class Client {
                 pProperty0.setValue("text/xml");
 
 
-
             } catch (Exception e) {
 
                 e.printStackTrace();
             }
-
-
-//            SoapMessage soapMessage = (SoapMessage)message;
-//            SoapHeader header = soapMessage.getSoapHeader();
-//            QName mainTag = new QName("http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/", "CustomHeaderElement");
-
-//            QName qName = new QName("http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/", "CustomHeaderElement");
-            //<CustomHeaderElement xmlns="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/"/>
-
-
-//            SoapHeaderElement headerElement = header.addHeaderElement(mainTag);
-
-
-            //StringSource headerSource = new StringSource("foo bar");
-            //Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            //transformer.transform(headerSource, soapHeader.getResult());
         }
     }
-//    public void createSoap() throws SOAPException {
-//
-//        SOAPMessage soapMessage;
-//        MessageFactory messageFactory;
-
-//        SaajSoapMessage message = new SaajSoapMessage(soapMessage, true, messageFactory);
-
-//        MessageFactory factory = MessageFactory.newInstance();
-//        SOAPMessage soapMessage = factory.createMessage();
-//
-//        SOAPPart soapPart = soapMessage.getSOAPPart();
-//        SOAPEnvelope soapEnvelope = soapMessage.getSOAPPart().getEnvelope();
-//
-//        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
-////        soapHeader = soapMessage.getSOAPHeader();
-//
-//        SOAPBody soapBody = soapEnvelope.getBody();
-////        soapBody = soapMessage.getSOAPBody();
-//
-//        SOAPFactory soapFactory = SOAPFactory.newInstance();
-//        Name bodyName = soapFactory.createName("myowntag", "wut","urn:MySoapTest" );
-//        SOAPBodyElement customtag = soapMessage.getSOAPBody().addDocument(soapPart);
-//        Name childName = soapFactory.createName("childname");
-//        SOAPElement order = customtag.addChildElement(childName);
-
-//        order.addTextNode("15151515");
-//        return soapMessage;
-
-//    }
-
-
-
-//    public SubmitResponse getBank(String url, Object requestPayload){
-//
-//
-//        JAXBElement res = null;
-//        try {
-//            res = (JAXBElement) template.marshalSendAndReceive(url, requestPayload, new WebServiceMessageCallback() {
-//
-//                @Override
-//                public void doWithMessage(WebServiceMessage message) {
-//                    try {
-//                        SoapHeader soapHeader = ((SoapMessage) message).getSoapHeader();
-//                        Map mapRequest = new HashMap();
-//
-//                        mapRequest.put("loginuser", environment.getProperty("soap.auth.username"));
-//                        mapRequest.put("loginpass", environment.getProperty("soap.auth.password"));
-//                        StringSubstitutor substitutor = new StringSubstitutor(mapRequest, "%(", ")");
-//                        String finalXMLRequest = substitutor.replace(environment.getProperty("soap.auth.header"));
-//                        StringSource headerSource = new StringSource(finalXMLRequest);
-//                        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-//                        transformer.transform(headerSource, soapHeader.getResult());
-//                        logger.info("Marshalling of SOAP header success.");
-//                    } catch (Exception e) {
-//                        logger.error("error during marshalling of the SOAP headers", e);
-//                    }
-//                }
-//            });
-//        }catch (SoapFaultClientException e){
-//            logger.error("Error while invoking session service : " + e.getMessage());
-//            return null;
-//        }
-//        return res.getValue();
-//    }
 }
 
 
