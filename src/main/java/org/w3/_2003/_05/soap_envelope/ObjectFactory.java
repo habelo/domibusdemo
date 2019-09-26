@@ -39,35 +39,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Header }
+     * Create an instance of {@link NotUnderstoodType }
      * 
      */
-    public Header createHeader() {
-        return new Header();
-    }
-
-    /**
-     * Create an instance of {@link Faultcode }
-     * 
-     */
-    public Faultcode createFaultcode() {
-        return new Faultcode();
-    }
-
-    /**
-     * Create an instance of {@link UpgradeType }
-     * 
-     */
-    public UpgradeType createUpgradeType() {
-        return new UpgradeType();
-    }
-
-    /**
-     * Create an instance of {@link Reasontext }
-     * 
-     */
-    public Reasontext createReasontext() {
-        return new Reasontext();
+    public NotUnderstoodType createNotUnderstoodType() {
+        return new NotUnderstoodType();
     }
 
     /**
@@ -79,6 +55,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Header }
+     * 
+     */
+    public Header createHeader() {
+        return new Header();
+    }
+
+    /**
      * Create an instance of {@link Detail }
      * 
      */
@@ -87,19 +71,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Fault }
+     * Create an instance of {@link UpgradeType }
      * 
      */
-    public Fault createFault() {
-        return new Fault();
-    }
-
-    /**
-     * Create an instance of {@link Body }
-     * 
-     */
-    public Body createBody() {
-        return new Body();
+    public UpgradeType createUpgradeType() {
+        return new UpgradeType();
     }
 
     /**
@@ -111,11 +87,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link NotUnderstoodType }
+     * Create an instance of {@link Reasontext }
      * 
      */
-    public NotUnderstoodType createNotUnderstoodType() {
-        return new NotUnderstoodType();
+    public Reasontext createReasontext() {
+        return new Reasontext();
+    }
+
+    /**
+     * Create an instance of {@link Fault }
+     * 
+     */
+    public Fault createFault() {
+        return new Fault();
     }
 
     /**
@@ -132,6 +116,22 @@ public class ObjectFactory {
      */
     public Subcode createSubcode() {
         return new Subcode();
+    }
+
+    /**
+     * Create an instance of {@link Faultcode }
+     * 
+     */
+    public Faultcode createFaultcode() {
+        return new Faultcode();
+    }
+
+    /**
+     * Create an instance of {@link Body }
+     * 
+     */
+    public Body createBody() {
+        return new Body();
     }
 
     /**

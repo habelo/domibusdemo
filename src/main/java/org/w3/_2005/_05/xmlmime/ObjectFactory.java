@@ -30,19 +30,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Base64Binary }
-     * 
-     */
-    public Base64Binary createBase64Binary() {
-        return new Base64Binary();
-    }
-
-    /**
      * Create an instance of {@link HexBinary }
      * 
      */
     public HexBinary createHexBinary() {
         return new HexBinary();
+    }
+
+    /**
+     * Create an instance of {@link Base64Binary }
+     * 
+     */
+    public Base64Binary createBase64Binary() {
+        return new Base64Binary();
     }
 
 }

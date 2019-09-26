@@ -20,7 +20,6 @@
 
     <dependencies>
 
-
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -28,13 +27,12 @@
             <version>1.8</version>
         </dependency>
 
-
         <dependency>
             <groupId>wsdl4j</groupId>
             <artifactId>wsdl4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.ws</groupId>
+                <groupId>org.springframework.ws</groupId>
             <artifactId>spring-ws-core</artifactId>
             <version>3.0.7.RELEASE</version>
         </dependency>
@@ -86,24 +84,97 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
 <!--xmlentitybuilder-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sources>
+<!--                        <source>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03#1/core_components/StandardBusinessDocumentHeader.xsd</source>-->
+                        <source>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03#1/core_components/infrastructure_messaging_MessageWithAttachments_1.0.xsd</source>
+<!--                        <source>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03#1/core_components/BasicTypes.xsd</source>-->
+<!--                        <source>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03#1/core_components/BusinessScope.xsd</source>-->
+<!--                        <source>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03#1/core_components/DocumentIdentification.xsd</source>-->
+<!--                        <source>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03#1/core_components/itintegration_registry_1.0.xsd</source>-->
+<!--                        <source>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03#1/core_components/Manifest.xsd</source>-->
+<!--                        <source>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03#1/core_components/Partner.xsd</source>-->
+                    </sources>
+                    <packageName>se.inera.sdk.message</packageName>
+                </configuration>
+            </plugin>
+
+
+
+<!--            xs builder try#1-->
 <!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>jaxb2-maven-plugin</artifactId>-->
-<!--                <version>1.6</version>-->
+<!--                <groupId>org.jvnet.jaxb2.maven2</groupId>-->
+<!--                <artifactId>maven-jaxb2-plugin</artifactId>-->
+<!--                <version>0.14.0</version>-->
 <!--                <executions>-->
 <!--                    <execution>-->
-<!--                        <id>xjc</id>-->
+<!--                        <id>add-source-for-demoapp</id>-->
 <!--                        <goals>-->
-<!--                            <goal>xjc</goal>-->
+<!--                            <goal>generate</goal>-->
 <!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <schemaDirectory>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03.1/core_components</schemaDirectory>-->
+<!--                            <schemaIncludes>-->
+<!--                                <include>infrastructure_messaging_MessageWithAttachments_1.0.xsd</include>-->
+<!--                                <include>BasicTypes.xsd</include>-->
+<!--                            </schemaIncludes>-->
+<!--                            <bindingDirectory>${project.basedir}/src/main/resources/META-INF/sdk-document-type_2019-09-03.1</bindingDirectory>-->
+<!--                            <bindingIncludes>-->
+<!--                                <include>jaxb-binding.xml</include>-->
+<!--                            </bindingIncludes>-->
+<!--                            <generateDirectory>target/generated-sources/xjc/workflow</generateDirectory>-->
+<!--                            <generatePackage>${project.basedir}/src/main/java/sdk-document-type_2019-09-03#1</generatePackage>-->
+<!--                            &lt;!&ndash;  Other configuration options&ndash;&gt;-->
+<!--                            <plugins>-->
+<!--                                <plugin>-->
+<!--                                    <groupId>org.jvnet.jaxb2_commons</groupId>-->
+<!--                                    <artifactId>jaxb2-basics</artifactId>-->
+<!--                                    <version>0.9.4</version>-->
+<!--                                </plugin>-->
+<!--                            </plugins>-->
+<!--                            <args>-->
+<!--                                <arg>-Xequals</arg>-->
+<!--                                <arg>-XhashCode</arg>-->
+<!--                                <arg>-XtoString</arg>-->
+<!--                            </args>-->
+<!--                        </configuration>-->
 <!--                    </execution>-->
 <!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <schemaDirectory>${project.basedir}/src/main/resources/</schemaDirectory>-->
-<!--                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>-->
-<!--                    <clearOutputDir>false</clearOutputDir>-->
-<!--                </configuration>-->
+<!--            </plugin>-->
+
+<!--&lt;!&ndash;            add source folder in target&ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>build-helper-maven-plugin</artifactId>-->
+<!--                <version>3.0.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>add-source</id>-->
+<!--                        <phase>generate-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>add-source</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <sources>-->
+<!--                                <source>${basedir}/target/generated-sources/xjc/workflow</source>-->
+<!--                            </sources>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
 <!--            </plugin>-->
 
 <!--            wsdl builder-->
@@ -118,11 +189,13 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
+
                             <wsdlDirectory>${basedir}/src/main/resources/META-INF/wsdl</wsdlDirectory>
                             <wsdlFiles>
                                 <wsdlFile>BackendService_1_1.wsdl</wsdlFile>
                             </wsdlFiles>
                             <sourceDestDir>${basedir}/src/main/java</sourceDestDir>
+
                         </configuration>
                     </execution>
                 </executions>
@@ -135,6 +208,8 @@
                 </dependencies>
             </plugin>
         </plugins>
+
+
     </build>
 
 </project>

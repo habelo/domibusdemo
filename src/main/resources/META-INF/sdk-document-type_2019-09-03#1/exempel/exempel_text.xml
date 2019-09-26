@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:messagePayload xmlns:p="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:tns="urn:riv:infrastructure:messaging:MessageWithAttachments:1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:riv:infrastructure:messaging:MessageWithAttachments:1 ../core_components/infrastructure_messaging_MessageWithAttachments_1.0.xsd ">
+  <tns:standardBusinessDocument>
+   <p:HeaderVersion>1.0</p:HeaderVersion>
+		<p:Sender>
+			<p:Identifier Authority="riv-actorid-unregistered">habo.se</p:Identifier>
+		</p:Sender>
+		<p:Receiver>
+			<p:Identifier Authority="riv-actorid-unregistered">arbetsformedlingen.se</p:Identifier>
+		</p:Receiver>
+		<p:DocumentIdentification>
+			<p:Standard>urn:riv:infrastructure:messaging:MessageWithAttachments:1</p:Standard>
+			<p:TypeVersion>1.0</p:TypeVersion>
+			<p:InstanceIdentifier>SBDH:862693f7-53d4-4d96-b35c-470055710092</p:InstanceIdentifier>
+			<p:Type>Message</p:Type>
+			<p:MultipleType>false</p:MultipleType>
+			<p:CreationDateAndTime>2018-09-12T12:00:00</p:CreationDateAndTime>
+		</p:DocumentIdentification>
+
+		<p:BusinessScope>
+			<p:Scope>
+				<p:Type>DOCUMENTID</p:Type>
+				<p:InstanceIdentifier>urn:riv:infrastructure:messaging:MessageWithAttachments:1:Message</p:InstanceIdentifier>
+			</p:Scope>
+			<p:Scope>
+				<p:Type>PROCESSID</p:Type>
+				<p:InstanceIdentifier>messaging-process</p:InstanceIdentifier>
+			</p:Scope>
+		</p:BusinessScope>
+  </tns:standardBusinessDocument>
+  
+  <tns:message>
+    <tns:messageHeader>
+			<tns:creationDateTime>2018-09-04T15:36:00</tns:creationDateTime>
+			<tns:messageId>ff325210-0690-42fe-b86f-95ecab821223</tns:messageId>
+			<tns:conversationId>a8480ada-6a1f-44a3-a960-9acaf4efcdcd</tns:conversationId>
+			<tns:label>Rubrik: Kallelse till SIP möte</tns:label>
+			<tns:confidentiality>false</tns:confidentiality>
+			<tns:generatingSystem>
+				<tns:root>kodverk-id</tns:root>
+				<tns:extension>system-id-123456789</tns:extension>
+			</tns:generatingSystem>
+			<tns:recipient>
+				<tns:recipientID>
+					<tns:root>iso6523:0090</tns:root>
+					<tns:extension>arbetsformedlingen.se</tns:extension>
+				</tns:recipientID>
+				<tns:label>Arbetsförmedlingen</tns:label>
+				<tns:attention>
+					<tns:subOrganization>
+						<tns:organizationId>
+							<tns:root>OID-AF-UNITS</tns:root>
+							<tns:extension>sub-funktion-org-id</tns:extension>
+						</tns:organizationId>
+						<tns:label>Avdelningen för Arbetsträning</tns:label>
+					</tns:subOrganization>
+				</tns:attention>
+			</tns:recipient>
+			<tns:sender>
+				<tns:senderID>
+					<tns:root>iso6523:0090</tns:root>
+					<tns:extension>habo.se</tns:extension>
+				</tns:senderID>
+				<tns:label>Håbo kommun</tns:label>
+				<tns:attention>
+					<tns:person>
+						<tns:personId>
+							<tns:root>1.2.752.29.6.2.1</tns:root>
+							<tns:extension>SE2321000016-person</tns:extension>
+						</tns:personId>
+						<tns:label>Karin Svensson</tns:label>
+					</tns:person>
+					<tns:subOrganization>
+						<tns:organizationId>
+							<tns:root>1.2.752.29.6.2.1</tns:root>
+							<tns:extension>SE2321000016-SubOrgUnit-id</tns:extension>
+						</tns:organizationId>
+						<tns:label>Socialtjänsten Håbo kommun</tns:label>
+					</tns:subOrganization>
+				</tns:attention>
+			</tns:sender>
+		</tns:messageHeader>
+		<tns:messageBody>
+			<tns:documents>
+				<tns:documentID>SDK meddelande</tns:documentID>
+				<tns:documentName>Rubrik: Kallelse till SIP möte</tns:documentName>
+				<tns:index>1</tns:index>
+				<tns:ContentText>
+					<tns:characterSequence>Textmeddelande 123 åäö</tns:characterSequence>
+				</tns:ContentText>
+			</tns:documents>
+		</tns:messageBody>
+  </tns:message>
+</tns:messagePayload>

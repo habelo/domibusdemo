@@ -1,6 +1,7 @@
 package com.tdialog.domibusdemo;
 
 import backend.ecodex.org._1_1.*;
+import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartyId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ public class Client {
     private String address;
 
     private final WebServiceTemplate template;
-    private final ObjectFactory factory = new ObjectFactory();
+    private final backend.ecodex.org._1_1.ObjectFactory factory = new backend.ecodex.org._1_1.ObjectFactory();
 
 
     @Autowired

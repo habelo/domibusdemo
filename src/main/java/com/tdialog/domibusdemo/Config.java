@@ -44,9 +44,7 @@ public class Config extends WsConfigurerAdapter {
     }
 
 
-
-    //first working config
-//    @Bean(name = "backendservice_1_1")
+    //first working config//    @Bean(name = "backendservice_1_1")
 //    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema domibusBackend){
 //
 //        DefaultWsdl11Definition definition = new DefaultWsdl11Definition();

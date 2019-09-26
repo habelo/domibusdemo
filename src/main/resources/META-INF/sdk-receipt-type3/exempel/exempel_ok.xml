@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:Receipt
+	xmlns:p="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader"
+	xmlns:tns="urn:riv:infrastructure:messaging:Receipt:1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:riv:infrastructure:messaging:Receipt:1 ../core_components/infrastructure_messaging_Receipt_1.0.xsd ">
+	<tns:standardBusinessDocument>
+		<p:HeaderVersion>1.0</p:HeaderVersion>
+		<p:Sender>
+			<p:Identifier Authority="riv-actorid-unregistered">habo.se</p:Identifier>
+		</p:Sender>
+		<p:Receiver>
+			<p:Identifier Authority="riv-actorid-unregistered">arbetsformedlingen.se</p:Identifier>
+		</p:Receiver>
+		<p:DocumentIdentification>
+			<p:Standard>urn:riv:infrastructure:messaging:Receipt:1</p:Standard>
+			<p:TypeVersion>1.0</p:TypeVersion>
+			<p:InstanceIdentifier>99245fd9-443b-4b6a-9a65-09568aa5291a</p:InstanceIdentifier>
+			<p:Type>messageReceipt</p:Type>
+			<p:MultipleType>false</p:MultipleType>
+			<p:CreationDateAndTime>2018-09-12T12:00:00</p:CreationDateAndTime>
+		</p:DocumentIdentification>
+		<p:BusinessScope>
+			<p:Scope>
+				<p:Type>DOCUMENTID</p:Type>
+				<p:InstanceIdentifier>urn:riv:infrastructure:messaging:Receipt:1:Receipt</p:InstanceIdentifier>
+			</p:Scope>
+			<p:Scope>
+				<p:Type>PROCESSID</p:Type>
+				<p:InstanceIdentifier>messaging-process</p:InstanceIdentifier>
+			</p:Scope>
+		</p:BusinessScope>
+	</tns:standardBusinessDocument>
+	
+	<tns:messageReceipt>
+		<tns:creationDateTime>2001-12-31T12:00:00</tns:creationDateTime>
+		<tns:MessageId>2462c41d-c41c-45d4-809f-566580a30c40</tns:MessageId>
+		<tns:refToMessageId>5d5398cb-f307-4190-a2cb-b792348b2fd4</tns:refToMessageId>
+		<tns:receiptCode>
+			<tns:receiptCode>OK</tns:receiptCode>
+		</tns:receiptCode>
+	</tns:messageReceipt>
+</tns:Receipt>
