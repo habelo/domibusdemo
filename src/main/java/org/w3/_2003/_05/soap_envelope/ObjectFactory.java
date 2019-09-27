@@ -39,11 +39,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link NotUnderstoodType }
+     * Create an instance of {@link UpgradeType }
      * 
      */
-    public NotUnderstoodType createNotUnderstoodType() {
-        return new NotUnderstoodType();
+    public UpgradeType createUpgradeType() {
+        return new UpgradeType();
     }
 
     /**
@@ -55,35 +55,19 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link NotUnderstoodType }
+     * 
+     */
+    public NotUnderstoodType createNotUnderstoodType() {
+        return new NotUnderstoodType();
+    }
+
+    /**
      * Create an instance of {@link Header }
      * 
      */
     public Header createHeader() {
         return new Header();
-    }
-
-    /**
-     * Create an instance of {@link Detail }
-     * 
-     */
-    public Detail createDetail() {
-        return new Detail();
-    }
-
-    /**
-     * Create an instance of {@link UpgradeType }
-     * 
-     */
-    public UpgradeType createUpgradeType() {
-        return new UpgradeType();
-    }
-
-    /**
-     * Create an instance of {@link Faultreason }
-     * 
-     */
-    public Faultreason createFaultreason() {
-        return new Faultreason();
     }
 
     /**
@@ -95,11 +79,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Fault }
+     * Create an instance of {@link Subcode }
      * 
      */
-    public Fault createFault() {
-        return new Fault();
+    public Subcode createSubcode() {
+        return new Subcode();
     }
 
     /**
@@ -111,19 +95,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Subcode }
-     * 
-     */
-    public Subcode createSubcode() {
-        return new Subcode();
-    }
-
-    /**
      * Create an instance of {@link Faultcode }
      * 
      */
     public Faultcode createFaultcode() {
         return new Faultcode();
+    }
+
+    /**
+     * Create an instance of {@link Detail }
+     * 
+     */
+    public Detail createDetail() {
+        return new Detail();
+    }
+
+    /**
+     * Create an instance of {@link Fault }
+     * 
+     */
+    public Fault createFault() {
+        return new Fault();
+    }
+
+    /**
+     * Create an instance of {@link Faultreason }
+     * 
+     */
+    public Faultreason createFaultreason() {
+        return new Faultreason();
     }
 
     /**

@@ -1,6 +1,10 @@
 package sanbox;
 
 import org.xml.sax.SAXException;
+import se.inera.sdk.message.ObjectFactory;
+import se.inera.sdk.message.Partner;
+import se.inera.sdk.message.StandardBusinessDocument;
+import se.inera.sdk.message.StandardBusinessDocumentHeader;
 
 import javax.activation.DataHandler;
 import javax.xml.parsers.DocumentBuilder;
@@ -14,17 +18,20 @@ public class Main {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         System.out.println("hej");
-        System.out.println(new String(Base64.getDecoder().decode("PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPGhlbGxvPndvcmxkPC9oZWxsbz4=")));
+        System.out.println(new String(Base64.getDecoder().decode("PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8U3RhbmRhcmRCdXNpbmVzc0RvY3VtZW50IHhtbG5zOm5zMj0iaHR0cDovL3d3dy51bmVjZS5vcmcvY2VmYWN0L25hbWVzcGFjZXMvU3RhbmRhcmRCdXNpbmVzc0RvY3VtZW50SGVhZGVyIiB4bWxuczpuczM9InVybjpyaXY6aW5mcmFzdHJ1Y3R1cmU6bWVzc2FnaW5nOk1lc3NhZ2VXaXRoQXR0YWNobWVudHM6MSI+CiAgICA8ZG9jdW1lbnQ+CiAgICAgICAgPG5zMjpTdGFuZGFyZEJ1c2luZXNzRG9jdW1lbnRIZWFkZXI+CiAgICAgICAgICAgIDxuczI6U2VuZGVyLz4KICAgICAgICA8L25zMjpTdGFuZGFyZEJ1c2luZXNzRG9jdW1lbnRIZWFkZXI+CiAgICA8L2RvY3VtZW50Pgo8L1N0YW5kYXJkQnVzaW5lc3NEb2N1bWVudD4K")));
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder = factory.newDocumentBuilder();
 
-        DataHandler dataHandler = new DataHandler(new String("hej"), "text/xml");
-        System.out.println("MIMETYPE: "+ dataHandler.getContentType());
+
 //        Document document = builder.parse(new InputSource(new StringReader(get())));
-
-
-
+        ObjectFactory factory1 = new ObjectFactory();
+        StandardBusinessDocument xml = factory1.createStandardBusinessDocument();
+        StandardBusinessDocumentHeader header = factory1.createStandardBusinessDocumentHeader();
+        header.getSender().add(new Partner());
+        xml.setStandardBusinessDocumentHeader(header);
+        DataHandler dataHandler = new DataHandler(xml, "text/xml");
+        System.out.println(dataHandler.getContent());
     }
 
 

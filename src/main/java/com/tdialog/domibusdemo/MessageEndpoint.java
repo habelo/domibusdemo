@@ -10,6 +10,7 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 
 @Endpoint
 public class MessageEndpoint {
@@ -32,7 +33,7 @@ public class MessageEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE, localPart = "submitRequest")
     @ResponsePayload
-    public SubmitResponse submitMessage(@RequestPayload SubmitRequest request){
+    public SubmitResponse submitMessage(@RequestPayload SubmitRequest request) throws JAXBException {
         System.out.println("Request payload: "+ request.getPayload());
 //        Client client = new Client(webServiceTemplate);
 //        client.submitMessage();

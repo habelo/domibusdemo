@@ -1,5 +1,6 @@
 package com.tdialog.domibusdemo;
 
+import Objects.RootXmlObject;
 import backend.ecodex.org._1_1.*;
 import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartyId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +10,24 @@ import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
+import se.inera.sdk.message.Partner;
+import se.inera.sdk.message.PartnerIdentification;
+import se.inera.sdk.message.StandardBusinessDocument;
+import se.inera.sdk.message.StandardBusinessDocumentHeader;
 
 import javax.activation.*;
 import javax.annotation.PostConstruct;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.soap.*;
+import javax.xml.stream.XMLStreamReader;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
@@ -49,7 +60,7 @@ public class Client {
         DataHandler.setDataContentHandlerFactory(new DomibusDataHandlerContentFactory());
     }
 
-    public SubmitResponse submitMessage() {
+    public SubmitResponse submitMessage() throws JAXBException {
 
 //        ObjectFactory factory = new ObjectFactory();
         SubmitRequest request = factory.createSubmitRequest();
@@ -59,7 +70,29 @@ public class Client {
         localMessage.setText("hejsan alla galna glada");
         String testString = new String("Test test");
 
-        DataHandler testHandler = new DataHandler(testString, "text/xml");
+        se.inera.sdk.message.ObjectFactory factory1 = new se.inera.sdk.message.ObjectFactory();
+        StandardBusinessDocument document = factory1.createStandardBusinessDocument();
+        StandardBusinessDocumentHeader header = factory1.createStandardBusinessDocumentHeader();
+
+        Partner partner = new Partner();
+        PartnerIdentification id = new PartnerIdentification();
+        id.setValue("MITT ID value");
+        partner.setIdentifier(id);
+        header.getSender().add(partner);
+        document.setStandardBusinessDocumentHeader(header);
+
+        RootXmlObject xml = new RootXmlObject();
+        xml.setDocument(document);
+
+        JAXBContext context = JAXBContext.newInstance(RootXmlObject.class);
+        Marshaller mar= context.createMarshaller();
+        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        StringWriter sw = new StringWriter();
+        mar.marshal(xml, sw);
+        String xmlString = sw.toString();
+
+        DataHandler testHandler = new DataHandler(xmlString, "text/xml");
+//        DataHandler testHandler = new DataHandler(testString, "text/xml");
         System.out.println("Testhandler contentType: "+ testHandler.getContentType());
         LargePayloadType testPayload = factory.createLargePayloadType();
         testPayload.setValue(testHandler);
@@ -73,7 +106,6 @@ public class Client {
 //        template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
 
         return (SubmitResponse)template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
-
     }
 
     public ListPendingMessagesResponse listPendingMessages(Object request) {
