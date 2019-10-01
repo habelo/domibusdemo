@@ -7,19 +7,19 @@ import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-        "document"
+        "standardBusinessDocument"
 })
-@XmlRootElement(name = "StandardBusinessDocument")
+@XmlRootElement(name = "messagePayload")
 public class RootXmlObject {
 
     @XmlElement(nillable = true)
-    public StandardBusinessDocument document;
+    public StandardBusinessDocument standardBusinessDocument;
 
-    public StandardBusinessDocument getDocument() {
-        return document;
+    public StandardBusinessDocument getStandardBusinessDocument() {
+        return standardBusinessDocument;
     }
 
-    public void setDocument(StandardBusinessDocument document) {
-        this.document = document;
+    public void setStandardBusinessDocument(StandardBusinessDocument standardBusinessDocument) {
+        this.standardBusinessDocument = standardBusinessDocument;
     }
 }

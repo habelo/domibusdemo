@@ -1,9 +1,7 @@
 package com.tdialog.domibusdemo;
 
 import javafx.util.Pair;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.LocalDateTime;

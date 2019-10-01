@@ -1,8 +1,7 @@
 package com.tdialog.domibusdemo;
 
-import Objects.RootXmlObject;
+import Objects.BuildSdkPayload;
 import backend.ecodex.org._1_1.*;
-import org.oasis_open.docs.ebxml_msg.ebms.v3_0.ns.core._200704.PartyId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,24 +9,23 @@ import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
-import se.inera.sdk.message.Partner;
-import se.inera.sdk.message.PartnerIdentification;
-import se.inera.sdk.message.StandardBusinessDocument;
-import se.inera.sdk.message.StandardBusinessDocumentHeader;
+import se.inera.sdk.message.MessagePayloadType;
 
-import javax.activation.*;
+import javax.activation.DataContentHandler;
+import javax.activation.DataContentHandlerFactory;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.soap.*;
-import javax.xml.stream.XMLStreamReader;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
@@ -62,55 +60,33 @@ public class Client {
 
     public SubmitResponse submitMessage() throws JAXBException {
 
-//        ObjectFactory factory = new ObjectFactory();
         SubmitRequest request = factory.createSubmitRequest();
 
-        Message localMessage = new Message();
-        localMessage.setTitle("Hej");
-        localMessage.setText("hejsan alla galna glada");
-        String testString = new String("Test test");
+        JAXBElement<MessagePayloadType> xml = BuildSdkPayload.build();
 
-        se.inera.sdk.message.ObjectFactory factory1 = new se.inera.sdk.message.ObjectFactory();
-        StandardBusinessDocument document = factory1.createStandardBusinessDocument();
-        StandardBusinessDocumentHeader header = factory1.createStandardBusinessDocumentHeader();
+        JAXBContext context = JAXBContext.newInstance(MessagePayloadType.class);
 
-        Partner partner = new Partner();
-        PartnerIdentification id = new PartnerIdentification();
-        id.setValue("MITT ID value");
-        partner.setIdentifier(id);
-        header.getSender().add(partner);
-        document.setStandardBusinessDocumentHeader(header);
-
-        RootXmlObject xml = new RootXmlObject();
-        xml.setDocument(document);
-
-        JAXBContext context = JAXBContext.newInstance(RootXmlObject.class);
         Marshaller mar= context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         StringWriter sw = new StringWriter();
         mar.marshal(xml, sw);
         String xmlString = sw.toString();
 
+        System.out.println("\nXML to send:\n" + xmlString);
+
         DataHandler testHandler = new DataHandler(xmlString, "text/xml");
-//        DataHandler testHandler = new DataHandler(testString, "text/xml");
-        System.out.println("Testhandler contentType: "+ testHandler.getContentType());
         LargePayloadType testPayload = factory.createLargePayloadType();
         testPayload.setValue(testHandler);
-        System.out.println("Commandmap is: "+CommandMap.getDefaultCommandMap().getClass().getName());
         testPayload.setPayloadId("cid:message");
 
         request.getPayload().add(testPayload);
 
-        System.out.println("Default urI: " + template.getDefaultUri());
         template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
-//        template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
-
         return (SubmitResponse)template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
     }
 
     public ListPendingMessagesResponse listPendingMessages(Object request) {
 
-//        factory.createListPendingMessagesRequest(request);
         return (ListPendingMessagesResponse)template.marshalSendAndReceive(request);
     }
 
@@ -118,7 +94,11 @@ public class Client {
         return (RetrieveMessageResponse)template.marshalSendAndReceive(request);
     }
 
-    private class DomibusDataHandlerContentFactory implements DataContentHandlerFactory {
+
+
+
+
+    private static class DomibusDataHandlerContentFactory implements DataContentHandlerFactory {
 
         @Override
         public DataContentHandler createDataContentHandler(String mimeType) {
@@ -129,7 +109,7 @@ public class Client {
 
     public static class DomibusXmlDataContentHandler implements DataContentHandler {
         /** Creates a new instance of BinaryDataHandler */
-        public DomibusXmlDataContentHandler() {
+        DomibusXmlDataContentHandler() {
             System.out.println("-----------------------------------------> Creating our handler thingie");
         }
 
@@ -139,18 +119,18 @@ public class Client {
         }
 
         @Override
-        public Object getTransferData(DataFlavor dataFlavor, DataSource dataSource) throws UnsupportedFlavorException, IOException {
-            return new String("Datajunkgrejer");
+        public Object getTransferData(DataFlavor dataFlavor, DataSource dataSource) {
+            return "Datajunkgrejer";
         }
 
         @Override
-        public Object getContent(DataSource dataSource) throws IOException {
-            return new String("Datajunkgrejer");
+        public Object getContent(DataSource dataSource) {
+            return "Datajunkgrejer";
         }
 
         @Override
         public void writeTo(Object o, String s, OutputStream outputStream) throws IOException {
-            byte[] stringByte = (byte[]) ((String) o).getBytes("UTF-8");
+            byte[] stringByte = ((String) o).getBytes(StandardCharsets.UTF_8);
             outputStream.write(stringByte);
         }
     }
@@ -165,12 +145,12 @@ public class Client {
         //private static final String TOVALUE = "domibus-red";
         private static final String TO_ROLE_VALUE = "http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/responder";
 
-        private static final String SERVICETYPE = "tc1";
-        //        private static final String SERVICETYPE = "se-digg-procid";
-        private static final String SERVICEVALUE = "bdx:noprocess";
-        //        private static final String SERVICEVALUE = "urn:riv:messaging-process";
-        private static final String ACTIONVALUE = "TC1Leg1";
-//        private static final String ACTIONVALUE = "urn:riv:infrastructure:messaging:MessageWithAttachments:1:Message";
+//        private static final String SERVICETYPE = "tc1";
+                private static final String SERVICETYPE = "se-digg-procid";
+//        private static final String SERVICEVALUE = "bdx:noprocess";
+                private static final String SERVICEVALUE = "urn:riv:messaging-process";
+//        private static final String ACTIONVALUE = "TC1Leg1";
+        private static final String ACTIONVALUE = "busdox-docid-qns::urn:riv:infrastructure:messaging:MessageWithAttachments:1";
 
         private static final String ORIGINALSENDER = "urn:oasis:names:tc:ebcore:partyid-type:unregistered:C1";
         private static final String FINALRECIPIENT = "urn:oasis:names:tc:ebcore:partyid-type:unregistered:C4";
@@ -216,18 +196,18 @@ public class Client {
                 //if not work: kolla metodanropens kronologi
                 SOAPElement partyInfoElement = userMessageElement.addChildElement("PartyInfo", "ns");
                 SOAPElement from = partyInfoElement.addChildElement("From", "ns");
-                SOAPElement to = partyInfoElement.addChildElement("To", "ns");
+//                SOAPElement to = partyInfoElement.addChildElement("To", "ns");
 
                 SOAPElement fromPartyId = from.addChildElement("PartyId", "ns");
                 fromPartyId.setAttribute("type", FROMTYPE);
                 fromPartyId.setValue(fromValue);
                 SOAPElement fromRole = from.addChildElement("Role", "ns");
                 fromRole.setValue(FROM_ROLE_VALUE);
-                SOAPElement toPartyId = to.addChildElement("PartyId", "ns");
-                toPartyId.setAttribute("type", TOTYPE);
-                toPartyId.setValue(toValue);
-                SOAPElement toRole = to.addChildElement("Role", "ns");
-                toRole.setValue(TO_ROLE_VALUE);
+//                SOAPElement toPartyId = to.addChildElement("PartyId", "ns");
+//                toPartyId.setAttribute("type", TOTYPE);
+//                toPartyId.setValue(toValue);
+//                SOAPElement toRole = to.addChildElement("Role", "ns");
+//                toRole.setValue(TO_ROLE_VALUE);
 
                 SOAPElement collaborationInfo = userMessageElement.addChildElement("CollaborationInfo", "ns");
 //                SOAPElement agreementRef = collaborationInfo.addChildElement("AgreementRef", "ns");
@@ -243,12 +223,16 @@ public class Client {
                 SOAPElement messageProperties = userMessageElement.addChildElement("MessageProperties", "ns");
                 SOAPElement mProperty0 = messageProperties.addChildElement("Property", "ns");
                 mProperty0.setAttribute("name", "originalSender");
+                mProperty0.setAttribute("type", "riv-actorid-unregistered");
 //                mProperty0.setValue(ORIGINALSENDER);
-                mProperty0.setValue(fromValue);
+                mProperty0.setValue("sundbyberg.se");
+//                mProperty0.setValue(fromValue);
                 SOAPElement mProperty1 = messageProperties.addChildElement("Property", "ns");
                 mProperty1.setAttribute("name", "finalRecipient");
+                mProperty1.setAttribute("type", "riv-actorid-unregistered");
 //                mProperty1.setValue(FINALRECIPIENT);
-                mProperty1.setValue(toValue);
+                mProperty1.setValue("testbed.inera.se");
+//                mProperty1.setValue(toValue);
 
                 SOAPElement payloadInfo = userMessageElement.addChildElement("PayloadInfo", "ns");
                 SOAPElement partInfo = payloadInfo.addChildElement("PartInfo", "ns");
@@ -260,7 +244,6 @@ public class Client {
                 SOAPElement pProperty0 = partProperties.addChildElement("Property", "ns");
                 pProperty0.setAttribute("name", "MimeType");
                 pProperty0.setValue("text/xml");
-
 
             } catch (Exception e) {
 
