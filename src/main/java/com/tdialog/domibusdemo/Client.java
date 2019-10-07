@@ -2,6 +2,7 @@ package com.tdialog.domibusdemo;
 
 import Objects.BuildSdkPayload;
 import backend.ecodex.org._1_1.*;
+import com.sun.xml.messaging.saaj.soap.XmlDataContentHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -60,19 +61,20 @@ public class Client {
 
     public SubmitResponse submitMessage() throws JAXBException {
 
+
         SubmitRequest request = factory.createSubmitRequest();
 
         JAXBElement<MessagePayloadType> xml = BuildSdkPayload.build();
 
         JAXBContext context = JAXBContext.newInstance(MessagePayloadType.class);
 
-        Marshaller mar= context.createMarshaller();
+        Marshaller mar = context.createMarshaller();
         mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         StringWriter sw = new StringWriter();
         mar.marshal(xml, sw);
         String xmlString = sw.toString();
 
-        System.out.println("\nXML to send:\n" + xmlString);
+//        System.out.println("\nXML to send:\n" + xmlString);
 
         DataHandler testHandler = new DataHandler(xmlString, "text/xml");
         LargePayloadType testPayload = factory.createLargePayloadType();
@@ -81,7 +83,12 @@ public class Client {
 
         request.getPayload().add(testPayload);
 
-        template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
+        System.out.println("TYPE: " +testHandler.getContentType());
+        try {
+            System.out.println("CONTENT: "+ testHandler.getContent().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return (SubmitResponse)template.marshalSendAndReceive(request, new CustomWebServiceMessageCallback(toValue, fromValue, address));
     }
 
@@ -94,16 +101,32 @@ public class Client {
         return (RetrieveMessageResponse)template.marshalSendAndReceive(request);
     }
 
+    public static class SecondDataContentHandler extends XmlDataContentHandler{
 
+        public SecondDataContentHandler() throws ClassNotFoundException {
 
+        }
+
+        @Override
+        public void writeTo(Object obj, String mimeType, OutputStream os) throws IOException {
+            byte[] stringByte = ((String) obj).getBytes(StandardCharsets.UTF_8);
+            os.write(stringByte);
+        }
+    }
 
 
     private static class DomibusDataHandlerContentFactory implements DataContentHandlerFactory {
 
         @Override
-        public DataContentHandler createDataContentHandler(String mimeType) {
+        public DataContentHandler createDataContentHandler(String mimeType)  {
 
-            return new DomibusXmlDataContentHandler();
+            try {
+                return new SecondDataContentHandler();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return null;
+//            return new DomibusXmlDataContentHandler();
         }
     }
 
@@ -217,7 +240,6 @@ public class Client {
                 SOAPElement action = collaborationInfo.addChildElement("Action", "ns");
                 action.setValue(ACTIONVALUE);
                 SOAPElement conversationId = collaborationInfo.addChildElement("ConversationId", "ns");
-                //TODO ÄNDRA när det är konversation
                 conversationId.setValue("TDIALOG-");
 
                 SOAPElement messageProperties = userMessageElement.addChildElement("MessageProperties", "ns");

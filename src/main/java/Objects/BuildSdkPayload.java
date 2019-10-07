@@ -15,7 +15,7 @@ public class BuildSdkPayload {
     private static String RECIEVERAUTH = "riv-actorid-unregistered";
     private static String SENDERID = "sundbyberg.se";
     private static String RECIEVERID = "testbed.inera.se";
-    private static String DOCUMENTIDSTANDARD =  "urn:riv:infrastructure:messaging:MessageWithAttachments:1";
+    private static String DOCUMENTIDSTANDARD = "urn:riv:infrastructure:messaging:MessageWithAttachments:1";
     private static String MESSAGEHEADERLABEL = "test utan attachment";
     private static String CONFIDENTIALITY = "false";
     private static String RECIPIENTROOT = "riv-actorid-unregistered";
@@ -38,21 +38,16 @@ public class BuildSdkPayload {
     private static se.inera.sdk.message.ObjectFactory factory1 = new se.inera.sdk.message.ObjectFactory();
 
 
-
     public static JAXBElement<MessagePayloadType> build() {
-//        RootXmlObject xml = new RootXmlObject();
-//        document.setStandardBusinessDocumentHeader(header);
-//        xml.setStandardBusinessDocument(document);
 
         MessagePayloadType messagePayloadType = factory1.createMessagePayloadType();
         messagePayloadType.setStandardBusinessDocument(buildSBD());
         messagePayloadType.setMessage(buildMessage());
 
-
         return factory1.createMessagePayload(messagePayloadType);
     }
 
-    private static MessageType buildMessage()  {
+    private static MessageType buildMessage() {
 
         MessageType message = factory1.createMessageType();
         MessageHeaderType header = factory1.createMessageHeaderType();
@@ -105,16 +100,16 @@ public class BuildSdkPayload {
         recipient.setAttention(buildAttention(false));
 
 
-        return  recipient;
+        return recipient;
     }
 
     private static AttentionDataType buildAttention(boolean sender) {
 
         AttentionDataType attention = factory1.createAttentionDataType();
-        if(sender){
+        if (sender) {
             attention.getPerson().add(buildPerson(true));
             attention.setSubOrganization(buildSubOrg(true));
-        }else {
+        } else {
             attention.getPerson().add(buildPerson(false));
             attention.setSubOrganization(buildSubOrg(false));
         }
@@ -125,14 +120,14 @@ public class BuildSdkPayload {
     private static SubOrganizationType buildSubOrg(boolean sender) {
         SubOrganizationType organizationType = factory1.createSubOrganizationType();
         IIType id = factory1.createIIType();
-        if(sender){
+        if (sender) {
             id.setRoot(SENDERORGROOT);
             organizationType.setOrganizationId(id);
             organizationType.setLabel(SENDORGLABEL);
-        }else {
-        id.setRoot(ORGIDEXT);
-        organizationType.setOrganizationId(id);
-        organizationType.setLabel(ORGLABEL);
+        } else {
+            id.setRoot(ORGIDEXT);
+            organizationType.setOrganizationId(id);
+            organizationType.setLabel(ORGLABEL);
         }
         return organizationType;
     }
@@ -140,12 +135,12 @@ public class BuildSdkPayload {
     private static AttentionPersonType buildPerson(boolean sender) {
         AttentionPersonType personType = factory1.createAttentionPersonType();
         IIType id = factory1.createIIType();
-        if(sender){
+        if (sender) {
             id.setRoot(SENDERPERSONID);
             id.setExtension("XYZ-ID-67890");
             personType.setPersonId(id);
             personType.setLabel(SENDERPERSONLABEL);
-        }else {
+        } else {
             id.setRoot(PERSONIDROOT);
             id.setExtension(PERSONIDEXT);
             personType.setPersonId(id);
@@ -159,14 +154,14 @@ public class BuildSdkPayload {
         String dateTimeString = Instant.now().toString();
         XMLGregorianCalendar date = null;
         try {
-         date = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateTimeString);
+            date = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateTimeString);
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
         return date;
     }
 
-    private static StandardBusinessDocumentHeader buildSBD(){
+    private static StandardBusinessDocumentHeader buildSBD() {
 
         StandardBusinessDocumentHeader header = factory1.createStandardBusinessDocumentHeader();
 

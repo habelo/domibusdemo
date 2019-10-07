@@ -20,6 +20,14 @@
 
     <dependencies>
 
+        <!-- https://mvnrepository.com/artifact/com.sun.xml.messaging.saaj/saaj-impl -->
+        <dependency>
+            <groupId>com.sun.xml.messaging.saaj</groupId>
+            <artifactId>saaj-impl</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -119,7 +127,7 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-                            <wsdlDirectory>${basedir}/src/main/resources/META-INF/wsdl</wsdlDirectory>
+                            <wsdlDirectory>${basedir}/src/main/resources/META-INF/domibuswsdl</wsdlDirectory>
                             <wsdlFiles>
                                 <wsdlFile>BackendService_1_1.wsdl</wsdlFile>
                             </wsdlFiles>

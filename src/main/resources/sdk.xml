@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:messagePayload xmlns="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader"
+                    xmlns:ns2="urn:riv:infrastructure:messaging:MessageWithAttachments:1">
+    <ns2:standardBusinessDocument>
+        <Sender>
+            <Identifier Authority="riv-actorid-unregistered">sundbyberg.se</Identifier>
+        </Sender>
+        <Receiver>
+            <Identifier Authority="riv-actorid-unregistered">testbed.inera.se</Identifier>
+        </Receiver>
+        <DocumentIdentification>
+            <Standard>urn:riv:infrastructure:messaging:MessageWithAttachments:1</Standard>
+        </DocumentIdentification>
+    </ns2:standardBusinessDocument>
+    <ns2:message>
+        <ns2:messageHeader>
+            <ns2:creationDateTime>2019-09-27T09:00:00.123Z</ns2:creationDateTime>
+            <ns2:messageId>92eb8cbc-6a6e-449e-ac9b-d582bae91304</ns2:messageId>
+            <ns2:conversationId>2eb8cbc-6a6e-449e-ac9b-d582bae91304</ns2:conversationId>
+            <ns2:label>Test utan attachment</ns2:label>
+            <ns2:confidentiality>false</ns2:confidentiality>
+            <ns2:recipient>
+                <ns2:recipientID>
+                    <ns2:root>riv-actorid-unregistered</ns2:root>
+                    <ns2:extension>testbed.inera.se</ns2:extension>
+                </ns2:recipientID>
+                <ns2:attention>
+                    <ns2:person>
+                        <ns2:personId>
+                            <ns2:root>1.2.752.129.2.1.4.1</ns2:root>
+                            <ns2:extension>SE2321000016-12345</ns2:extension>
+                        </ns2:personId>
+                        <ns2:label>Karin SDK Svensson</ns2:label>
+                    </ns2:person>
+                    <ns2:subOrganization>
+                        <ns2:organizationId>
+                            <ns2:extension>testbed.inera.se</ns2:extension>
+                        </ns2:organizationId>
+                        <ns2:label>Funktionsbrevlåda för xyz-kommun.se i SDK Testbädd</ns2:label>
+                    </ns2:subOrganization>
+                </ns2:attention>
+            </ns2:recipient>
+            <ns2:sender>
+                <ns2:senderID>
+                    <ns2:root>riv-actorid-unregistered</ns2:root>
+                    <ns2:extension>xyz-kommun.se</ns2:extension>
+                </ns2:senderID>
+                <ns2:attention>
+                    <ns2:person>
+                        <ns2:personId>
+                            <ns2:root>XYZ-ID-STANDARD</ns2:root>
+                            <ns2:extension>XYZ-ID-67890</ns2:extension>
+                        </ns2:personId>
+                        <ns2:label>Anders Andersson</ns2:label>
+                    </ns2:person>
+                    <ns2:subOrganization>
+                        <ns2:organizationId>
+                            <ns2:root>sundbyberg.se</ns2:root>
+                            <ns2:extension></ns2:extension>
+                        </ns2:organizationId>
+                        <ns2:label>Socialtjänsten Sundbyberg stad</ns2:label>
+                    </ns2:subOrganization>
+                </ns2:attention>
+            </ns2:sender>
+        </ns2:messageHeader>
+        <ns2:messageBody>
+            <ns2:documents>
+                <ns2:documentID>SDK Testmeddelande</ns2:documentID>
+                <ns2:documentName>SDK Testmeddelande</ns2:documentName>
+                <ns2:index>1</ns2:index>
+                <ns2:ContentText>
+                    <ns2:characterSequence>Ett enkelt testmeddelande utan bifogad fil.</ns2:characterSequence>
+                </ns2:ContentText>
+            </ns2:documents>
+        </ns2:messageBody>
+    </ns2:message>
+</ns2:messagePayload>

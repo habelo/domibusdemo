@@ -24,7 +24,8 @@ public class MarshallConfig {
         WebServiceTemplate webServiceTemplate = new WebServiceTemplate();
         webServiceTemplate.setMarshaller(jaxb2Marshaller());
         webServiceTemplate.setUnmarshaller(jaxb2Marshaller());
-        webServiceTemplate.setDefaultUri("https://domibus.tdialog.com/domibus/services/backend");
+        webServiceTemplate.setDefaultUri("http://localhost:8080/domibus/services/backend");
+//        webServiceTemplate.setDefaultUri("https://domibus.tdialog.com/domibus/services/backend");
 
         return webServiceTemplate;
     }
